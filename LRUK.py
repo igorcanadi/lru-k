@@ -49,9 +49,11 @@ class LRUKRP:
         #if this disk page is referenced for the first time, we create a history for the disk page
         if page not in self.pageinfo:
             self.pageinfo[page] = pageInfo(self.k)
+        
+        print(self.pageinfo[page].getHist())
             
         if p in self.buffer:
-            self.hits += 1 
+            self.hits += 1
             if self.pageinfo[page].getLast() != 0 and self.t - self.pageinfo[page].getLast() > self.CRP:
                 if self.pageinfo[page].getHist()[0] == 0:
                     self.pageinfo[page].updateHist(self.t, 0)
@@ -59,7 +61,7 @@ class LRUKRP:
                     self.pageinfo[page].updateCRP(self.pageinfo[page].getLast() - self.pageinfo[page].getHist()[0])
                     pageObj = self.pageinfo[page]
                     for i in range(1, self.k):
-                        pageObj.updateHist(pageObj.getHist()[i-1]+ pageObj.getCRP(), i)
+                        pageObj.updateHist(pageObj.getHist()[self.k-i-1]+ pageObj.getCRP(), self.k-i)
                     pageObj.updateHist(self.t, 0)
                     self.pageinfo[page].updateLast(self.t)
              
@@ -85,7 +87,7 @@ class LRUKRP:
                 pass
             else:
                 for i in range(1, self.k):
-                        pageObj.updateHist(pageObj.getHist()[i-1], i)
+                        pageObj.updateHist(pageObj.getHist()[self.k-i-1], self.k-i)
             
             pageObj.updateHist(self.t, 0)
             pageObj.updateLast(self.t)
@@ -96,18 +98,19 @@ def main():
     #generate a reference string
     R = []
     
-    random.seed(24)
+    random.seed(20)
     
     for i in range(10000):
-        R.append(random.randint(1, 1000))#assume there are 1000 disk pages
+        R.append(i % 52)
 
-    bufManager = LRUKRP(100, 2, 50, 10000)
+    bufManager = LRUKRP(50, 1, 30, 10000)
     
     #print(bufManager.buffer)
     for p in R:
         bufManager.requestPage(p)
         #bufManager.buffer.sort()
     #print(bufManager.buffer)
+    print(bufManager.buffer)
     print("number of hits: ", bufManager.hits)
     print("number of requests: ", bufManager.requests)
     print("hit ratio: ", bufManager.hits/bufManager.requests)
