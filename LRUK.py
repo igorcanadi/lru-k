@@ -49,8 +49,6 @@ class LRUKRP:
         #if this disk page is referenced for the first time, we create a history for the disk page
         if page not in self.pageinfo:
             self.pageinfo[page] = pageInfo(self.k)
-        
-        print(self.pageinfo[page].getHist())
             
         if p in self.buffer:
             self.hits += 1
