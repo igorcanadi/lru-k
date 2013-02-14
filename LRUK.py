@@ -51,7 +51,7 @@ class LRUKRP:
             self.pageinfo[page] = pageInfo(self.k)
             
         if p in self.buffer:
-            self.hits += 1
+            self.hits += 1 
             if self.pageinfo[page].getLast() != 0 and self.t - self.pageinfo[page].getLast() > self.CRP:
                 if self.pageinfo[page].getHist()[0] == 0:
                     self.pageinfo[page].updateHist(self.t, 0)
