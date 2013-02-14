@@ -100,10 +100,14 @@ def main():
     
     random.seed(20)
     
-    for i in range(10000):
-        R.append(i % 52)
+    for i in range(100000):
+        m = random.randint(1,100)
+        if m < 90:
+            R.append(random.randint(1,100))
+        else:
+            R.append(random.randint(101, 1000))
 
-    bufManager = LRUKRP(50, 1, 30, 10000)
+    bufManager = LRUKRP(50, 2, 30, 10000)
     
     #print(bufManager.buffer)
     for p in R:
