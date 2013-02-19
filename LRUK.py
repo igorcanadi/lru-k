@@ -41,6 +41,10 @@ class LRUKRP:
         self.t = 0
         self.hits = 0
         self.requests = 0
+
+    def clearStats(self):
+        self.hits = 0
+        self.requests = 0
         
     def requestPage(self, p):
         self.t += 1
@@ -89,8 +93,9 @@ class LRUKRP:
             
             pageObj.updateHist(self.t, 0)
             pageObj.updateLast(self.t)
-                        
-                
+
+    def getHitRatio(self):
+        return float(self.hits) / self.requests
 
 def main():
     #generate a reference string
