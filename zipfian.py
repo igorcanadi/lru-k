@@ -39,7 +39,7 @@ def choose_page_randomly():
     return N
 
 # TODO figure out CRP
-CRP = 10
+CRP = 20
 
 print "B\tLRU-1\tLRU-2\tLRU-3\tA0"
 for B in (40, 60, 80, 100, 120, 140, 160, 180, 200, 300, 500):
