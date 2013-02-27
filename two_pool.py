@@ -66,5 +66,5 @@ for B in (60, 80, 100, 120, 140, 160, 180, 200, 250, 300, 350, 400, 450):
     # find B(1) / B(2)
     B1B2 = find_buffer_size(lru[1].getHitRatio(), pages, B) / float(B)
 
-    print '%d\t%lf\t%lf\t%lf\t%lf\t%lf' % (B, lru[0].getHitRatio(), lru[1].getHitRatio(), lru[2].getHitRatio(), lru[3].getHitRatio(), B1B2)
+    print '%d\t%.2lf\t%.3lf\t%.3lf\t%.3lf\t%.1lf' % (B, lru[0].getHitRatio(), lru[1].getHitRatio(), lru[2].getHitRatio(), lru[3].getHitRatio(), B1B2)
 
