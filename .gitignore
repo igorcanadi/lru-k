@@ -36,3 +36,14 @@ nosetests.xml
 
 # traces
 Financial*.spc
+
+# Outputs for Latex
+*/*.pdf
+*/*.aux 
+*/*.out
+*/*.dvi
+*/*.log
+*/*.bbl
+*/*.blg
+*/*.gz
+/paper/paper.aux
