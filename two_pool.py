@@ -1,5 +1,6 @@
 from LRUK import LRUKRP
 import random
+from find_buffer_size import find_buffer_size
 
 N1 = 100
 N2 = 10000
@@ -42,21 +43,28 @@ def choose_page_randomly(i):
 # TODO figure out CRP
 CRP = 10
 
-print "B\tLRU-1\tLRU-2\tLRU-3\tA0"
+print "B\tLRU-1\tLRU-2\tLRU-3\tA0\tB1/B2"
 for B in (60, 80, 100, 120, 140, 160, 180, 200, 250, 300, 350, 400, 450):
     lru = []
     for k in range(1, 4):
         lru.append(LRUKRP(B, k, CRP, None))
     lru.append(A0(B))
 
+    pages = []
+    for i in range(40 * N1):
+        pages.append(choose_page_randomly(i))
+
     # warm-up period
     for i in range(10 * N1):
-        map(lambda l: l.requestPage(choose_page_randomly(i)), lru)
+        map(lambda l: l.requestPage(pages[i]), lru)
     # clear stats
     map(lambda l: l.clearStats(), lru)
     # real thing
     for i in range(30 * N1):
-        map(lambda l: l.requestPage(choose_page_randomly(i)), lru)
+        map(lambda l: l.requestPage(pages[i]), lru)
 
-    print '%d\t%lf\t%lf\t%lf\t%lf' % (B, lru[0].getHitRatio(), lru[1].getHitRatio(), lru[2].getHitRatio(), lru[3].getHitRatio())
+    # find B(1) / B(2)
+    B1B2 = find_buffer_size(lru[1].getHitRatio(), pages, B) / float(B)
+
+    print '%d\t%lf\t%lf\t%lf\t%lf\t%lf' % (B, lru[0].getHitRatio(), lru[1].getHitRatio(), lru[2].getHitRatio(), lru[3].getHitRatio(), B1B2)
 

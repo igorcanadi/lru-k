@@ -44,13 +44,13 @@ def choose_page_randomly():
     return N
 
 # TODO figure out CRP
-CRP = 20
+CRP = 30
 
 if len(sys.argv) < 2:
     print "kita"
     sys.exit()
 
-lines = open(sys.argv[1]).read().split('\n')[:-1]
+lines = open(sys.argv[1]).read().split('\n')[:100000]
 lines = map(lambda x: x.split(','), lines)
 lines = filter(lambda x: x[3] == 'r', lines)
 max_page = max(map(lambda x: int(x[1]), lines))
