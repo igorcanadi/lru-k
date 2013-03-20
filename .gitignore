@@ -42,7 +42,20 @@ Financial*.spc
 */*.aux 
 */*.dvi
 */*.log
+*/*.out
 */*.bbl
 */*.blg
 */*.gz
 /paper/paper.aux
+
+
+# R crap
+.Rapp.history
+/data/.RData
+/data/.Rhistory
+.RData
+.Rhistory
+
+# dropbox
+.DS_Store
+/paper/figures/.DS_Store

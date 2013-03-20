@@ -48,7 +48,7 @@ results = [ {}, {}, {}, {} ]
 for B in range(60, 450, 40):
     for k in range(3):
         results[k][B] = []
-    for runs in range(1, 5):
+    for runs in range(4):
         lru = []
         for k in range(3):
             lru.append(LRUKRP(B, k + 1, CRP, None))
@@ -69,7 +69,7 @@ for B in range(60, 450, 40):
             results[k][B].append(lru[k].getHitRatio())
 
 for k in range(3):
-    f = open('data/two_pool_lru%d.out' % (k + 1), 'w')
+    f = open('data/two_pool_lru%d.dat' % (k + 1), 'w')
     for B, l in sorted(results[k].iteritems()):
         m = np.mean(results[k][B])
         sd = np.std(results[k][B])

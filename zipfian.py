@@ -2,7 +2,7 @@ from LRUK import LRUKRP
 import random
 from math import log
 from find_buffer_size import find_buffer_size
-import numpy
+import numpy as np
 
 a = 0.8
 b = 0.2
@@ -40,31 +40,38 @@ def choose_page_randomly():
             return i
     return N
 
-# TODO figure out CRP
-CRP = 10
+CRP = 0
 
-print "B\tLRU-1\tLRU-2\tA0\tB1/B2"
-for B in (40, 60, 80, 100, 120, 140, 160, 180, 200, 300, 500):
-    lru = []
-    for k in range(1, 3):
-        lru.append(LRUKRP(B, k, CRP, None))
-    lru.append(A0(B))
+results = [ {}, {}, {} ]
 
-    pages = []
-    for i in range(4000):
-        pages.append(choose_page_randomly())
+for B in range(60, 450, 40):
+    for k in range(3):
+        results[k][B] = []
+    for runs in range(4):
+        lru = []
+        for k in range(3):
+            lru.append(LRUKRP(B, k + 1, CRP, None))
 
-    # warm-up period
-    for i in range(1000):
-        map(lambda l: l.requestPage(pages[i]), lru)
-    # clear stats
-    map(lambda l: l.clearStats(), lru)
-    # real thing
-    for i in range(3000):
-        map(lambda l: l.requestPage(pages[i]), lru)
+        pages = []
+        for i in range(4000):
+            pages.append(choose_page_randomly())
 
-    # find B(1) / B(2)
-    B1B2 = find_buffer_size(lru[1].getHitRatio(), pages, B) / float(B)
+        # warm-up period
+        for i in range(1000):
+            map(lambda l: l.requestPage(pages[i]), lru)
+        # clear stats
+        map(lambda l: l.clearStats(), lru)
+        # real thing
+        for i in range(3000):
+            map(lambda l: l.requestPage(pages[i + 1000]), lru)
 
-    print '%d\t%.2lf\t%.2lf\t%.3lf\t%.1lf' % (B, lru[0].getHitRatio(), lru[1].getHitRatio(), lru[2].getHitRatio(), B1B2)
+        for k in range(3):
+            results[k][B].append(lru[k].getHitRatio())
+
+for k in range(3):
+    f = open('data/zipfian_lru%d.dat' % (k + 1), 'w')
+    for B, l in sorted(results[k].iteritems()):
+        m = np.mean(results[k][B])
+        sd = np.std(results[k][B])
+        print >> f, B, m, sd
 
