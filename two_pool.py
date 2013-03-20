@@ -1,5 +1,6 @@
 from LRUK import LRUKRP
 import random
+import numpy as np
 from find_buffer_size import find_buffer_size
 
 N1 = 100
@@ -40,31 +41,36 @@ def choose_page_randomly(i):
     else:
         return random.randint(N1 + 1, N1 + N2)
 
-# TODO figure out CRP
-CRP = 10
+CRP = 0
 
-print "B\tLRU-1\tLRU-2\tLRU-3\tA0\tB1/B2"
-for B in (60, 80, 100, 120, 140, 160, 180, 200, 250, 300, 350, 400, 450):
-    lru = []
-    for k in range(1, 4):
-        lru.append(LRUKRP(B, k, CRP, None))
-    lru.append(A0(B))
+results = [ {}, {}, {}, {} ]
 
-    pages = []
-    for i in range(40 * N1):
-        pages.append(choose_page_randomly(i))
+for B in range(60, 450, 40):
+    for k in range(3):
+        results[k][B] = []
+    for runs in range(1, 5):
+        lru = []
+        for k in range(3):
+            lru.append(LRUKRP(B, k + 1, CRP, None))
 
-    # warm-up period
-    for i in range(10 * N1):
-        map(lambda l: l.requestPage(pages[i]), lru)
-    # clear stats
-    map(lambda l: l.clearStats(), lru)
-    # real thing
-    for i in range(30 * N1):
-        map(lambda l: l.requestPage(pages[i]), lru)
+        pages = []
+        for i in range(40 * N1):
+            pages.append(choose_page_randomly(i))
 
-    # find B(1) / B(2)
-    B1B2 = find_buffer_size(lru[1].getHitRatio(), pages, B) / float(B)
+        # warm-up period
+        for i in range(10 * N1):
+            map(lambda l: l.requestPage(pages[i]), lru)
+        # clear stats
+        map(lambda l: l.clearStats(), lru)
+        # real thing
+        for i in range(30 * N1):
+            map(lambda l: l.requestPage(pages[i + 10 * N1]), lru)
+        for k in range(3):
+            results[k][B].append(lru[k].getHitRatio())
 
-    print '%d\t%.2lf\t%.3lf\t%.3lf\t%.3lf\t%.1lf' % (B, lru[0].getHitRatio(), lru[1].getHitRatio(), lru[2].getHitRatio(), lru[3].getHitRatio(), B1B2)
-
+for k in range(3):
+    f = open('data/two_pool_lru%d.out' % (k + 1), 'w')
+    for B, l in sorted(results[k].iteritems()):
+        m = np.mean(results[k][B])
+        sd = np.std(results[k][B])
+        print >> f, B, m, m-sd, m+sd

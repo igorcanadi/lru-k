@@ -10,4 +10,5 @@ for i, line in enumerate(lines):
         except:
             pass
 
-print json.dumps(pages)
+print len(pages)
+#print json.dumps(pages)
