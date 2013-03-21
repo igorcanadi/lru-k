@@ -1,69 +1,27 @@
-\begin{table}
-\begin{center}
-\caption{Simulation results of the two pool experiment, with disk page pools of $N_1$ = 100 pages and $N_2$ = 10,000 pages. The first column shows the buffer size B. The second through gift columns show the hit rations of LRU-1, LRU-2, LRU-3, and A0. The last column shows the equi-effiective buffer size ration B(1)/B(2) of LRU-1 vs. LRU-2.}
-\begin{tabular}{| r | r | r | r | r | r |}
-\hline
-B & LRU-1 & LRU-2 & LRU-3 & A0 & B(1)/B(2) \\ 
-\hline
-60 & 0.14 & 0.262 & 0.268 & 0.294 & 2.1 \\ 
-\hline
-80 & 0.18 & 0.357 & 0.369 & 0.390 & 2.5 \\ 
-\hline
-100 & 0.21 & 0.450 & 0.475 & 0.497 & 3.0 \\ 
-\hline
-120 & 0.25 & 0.500 & 0.505 & 0.507 & 3.5 \\ 
-\hline
-140 & 0.28 & 0.505 & 0.513 & 0.514 & 3.3 \\ 
-\hline
-160 & 0.33 & 0.514 & 0.525 & 0.524 & 3.0 \\ 
-\hline
-180 & 0.35 & 0.512 & 0.530 & 0.530 & 2.5 \\ 
-\hline
-200 & 0.37 & 0.510 & 0.538 & 0.537 & 2.4 \\ 
-\hline
-250 & 0.42 & 0.514 & 0.557 & 0.560 & 1.9 \\ 
-\hline
-300 & 0.45 & 0.513 & 0.574 & 0.576 & 1.8 \\ 
-\hline
-350 & 0.48 & 0.515 & 0.594 & 0.598 & 1.6 \\ 
-\hline
-400 & 0.50 & 0.521 & 0.614 & 0.616 & 1.3 \\ 
-\hline
-450 & 0.50 & 0.517 & 0.628 & 0.630 & 1.3 \\
-\hline
-\end{tabular}
-\end{center}
-\end{table}
+\subsection{Two Pool Experiment}
 
-\begin{table}
-\begin{center}
-\caption{Simulation results on buffer cache hit rations for random access with Zipfian 80-20 distribution to a disk page pool of N = 1000 pages.}
-\begin{tabular}{| r | r | r | r | r | } 
-\hline
-B & LRU-1 & LRU-2 & A0 & B1/B2 \\ 
-\hline
-40 & 0.53 & 0.59 & 0.637 & 1.7 \\ 
-\hline
-60 & 0.56 & 0.62 & 0.664 & 1.6 \\ 
-\hline
-80 & 0.62 & 0.66 & 0.702 & 1.5 \\ 
-\hline
-100 & 0.65 & 0.73 & 0.751 & 1.7 \\ 
-\hline
-120 & 0.67 & 0.73 & 0.759 & 1.7 \\ 
-\hline
-140 & 0.68 & 0.75 & 0.771 & 1.6 \\ 
-\hline
-160 & 0.70 & 0.75 & 0.787 & 1.6 \\ 
-\hline
-180 & 0.72 & 0.77 & 0.808 & 1.5 \\ 
-\hline
-200 & 0.73 & 0.76 & 0.820 & 1.3 \\ 
-\hline
-300 & 0.80 & 0.87 & 0.889 & 1.0 \\ 
-\hline
-500 & 0.97 & 0.96 & 0.904 & 1.0 \\
-\hline
-\end{tabular}
-\end{center}
-\end{table}
+\begin{figure}[t!]
+    \centering
+	\includegraphics[width=0.5\textwidth]{./figures/two_pool.pdf}
+	\caption{Simulation results of two pool experiment with disk page pools of $N_1 = 100$ pages and $N_2 = 10000$ pages. Horizontal axis shows the simulate buffer size and vertical axis shows measured hit ratio. All measurements were evaluated with Correlated Reference Period set to 0.}
+	\label{fig:two_pool}
+\end{figure}
+
+
+\subsection{Zipfian Random Access Experiment}
+
+\begin{figure}[t!]
+    \centering
+	\includegraphics[width=0.5\textwidth]{./figures/zipfian.pdf}
+	\caption{Simulation results of cache hit ratio for random access with Zipfian 80-20 distribution to $N = 1000$ pages in the pool. Horizontal axis shows the simulate buffer size and vertical axis shows measured hit ratio. All measurements were evaluated with Correlated Reference Period set to 0.}
+	\label{fig:zipfian}
+\end{figure}
+
+
+\subsection{PostgreSQL Trace Experiment}
+
+\begin{figure}[t!]
+    \centering
+	\includegraphics[width=0.5\textwidth]{./figures/postgres.pdf}
+	\caption{Simulation results of different buffer management strategies using a trace collected from PostgreSQL running \texttt{pgbench} benchmark. Horizontal axis shows the simulate buffer size and vertical axis shows measured hit ratio. LRU-2 and LRU-3 are evaluated with Correlated Reference Period set to 0 and 20.}
+\end{figure}
