@@ -1,4 +1,4 @@
 \begin{abstract}
-Abstract TODO Larry
+This paper revisits the LRU-K page replacement algorithm. The LRU-K method selects pages for replacement in a database buffer by keeping track of the last k references to popular database pages. It adapts to real-world workloads by introducing the idea of correlated reference period. We implemented LRU-1, LRU-2 and LRU-3 with three experiments. The first two experiments, we replicated the two pool and zipfian workloads from O'Niel et al. \cite{lruk} and ran these three algorithms on them, our results are consistent with theirs in that LRU-2 outperforms LRU-1 and the results of LRU-2 and LRU-3 converge with increasing buffer sizes. In the third experiment, we simulated LRU-K on a trace from PostgreSQL and reached the same conclusion as the first two with correlated reference period set properly.
 \end{abstract}
 
