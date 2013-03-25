@@ -38,7 +38,6 @@ nosetests.xml
 Financial*.spc
 
 # Outputs for Latex
-*/*.pdf
 */*.aux 
 */*.dvi
 */*.log

@@ -1,1 +1,11 @@
-Intro TODO
+Database systems use memory buffer to retain some number of pages for a while after they've been read from the disk. That way, if they need the same page again and it is in memory buffer, they can save one access to the disk. The question is, when the buffer is full and we need to put another page in, which page should we drop from the buffer. Popular algorithm to determine the page to drop is Least Recently Used (LRU). With LRU, buffer drops the page that was used least recently.
+
+In 1993, O'Niel et al. \cite{lruk} developed an extension to LRU algorithm called LRU-K. The basic idea of LRU-K is to use last K references of the page and drop the page with least recent Kth reference in the past. With $K = 1$, the algorithm is equivalent to classic LRU algorithm.
+
+As an extension to LRU-K, O'Niel et al. propose correlated reference period method. (TODO Larry - describe correlated reference period)
+
+In their paper, O'Niel et al. propose a hypothesis that LRU-2 and LRU-3 outperform LRU-1. They also hypothesize that LRU-3 is only slightly better than LRU-2 and propose using LRU-2 because of the slower adaptation of LRU-3 to evolving access patterns. They show that their hypotheses hold for three workloads - two pool, zipfian and OLTP trace.
+
+We recreate their first two experiments - two pool and zipfian. As a third one, we use a trace from instrumentalized PostgreSQL running \texttt{pgbench}. Our results in all three experiments support both of their hypotheses.
+
+We organize the paper as follows. In section \ref{sec:method} we discuss our experiment methodology. In section \ref{sec:results} we present our results and in section \ref{sec:conc} we conclude.
