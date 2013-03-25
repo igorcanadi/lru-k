@@ -1,7 +1,7 @@
-We evaluated LRU-K algorithm on three workloads: two pool, zipfian and \texttt{pgbench} running on PostgreSQL. 
+We evaluated LRU-K algorithm on three workloads: two-pool, zipfian and \texttt{pgbench} running on PostgreSQL. 
 
-We replicated two pool and zipfian experiment from O'Neil et al. \cite{lruk}. Our results are consistent with theirs, showing that LRU-2 outperforms LRU-1 and that there is no big difference between LRU-2 and LRU-3.
+We replicated two-pool and zipfian experiment from O'Neil et al. \cite{lruk}. Our results are consistent with theirs, showing that LRU-2 outperforms LRU-1 and that there is no big difference between LRU-2 and LRU-3.
 
-As an addition, we also evaluated LRU-K on a trace from PosgreSQL. Interestingly, we show LRU-2 and LRU-3 perform worse than LRU-1 with correlated reference period disabled. However, when we use correlated reference period and set it to 20, we see much higher performance in LRU-2 and LRU-3 case. These results also prove that correlated reference period is needed in real system, which O'Neil et al. \cite{lruk} don't show in their experiments.
+As an addition, we also evaluated LRU-K on a trace from PosgreSQL. Interestingly, we show LRU-2 and LRU-3 perform worse than LRU-1 with correlated reference period disabled. However, when we use the correlated reference period and set it to 20, we see much higher performance in LRU-2 and LRU-3 case. These results also prove that the correlated reference period is needed in real system, which O'Neil et al. \cite{lruk} don't show in their experiments.
 
-Overall, we proved our hypothesis that performance benefits can be achieved using LRU-K for $K > 1$. We also showed that there is no big difference in performance for LRU-2 and LRU-3 for workloads we measured. Since LRU-3 by its nature adapts to changes slower than LRU-2, we argue that LRU-2 should be preferred as buffer management algorithm.
+Overall, we proved our hypothesis that performance benefits can be achieved using LRU-K for $K > 1$. We also showed that there is no big difference in performance for LRU-2 and LRU-3 for the workloads we measured. Since LRU-3 by its nature adapts to changes slower than LRU-2, we argue that LRU-2 should be preferred as buffer management algorithm.
