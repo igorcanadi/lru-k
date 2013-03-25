@@ -1,6 +1,9 @@
-TO mention:
-* prvih 1000 uvijek warmup
-* kako se racuna hit ratio
-* cetiri runs - average
-* error bars
-* python, R
+At the beginning of an experiment, when the buffer is empty we'll inevitably see a lot of cache misses until the buffer fills up. This is why in all our experiments we don't account for first 1000 buffer accesses. After we process 1000 buffer accesses, we reset the counters and report hit ratio only on the remaining accesses.
+
+As a result of our experiments, we measure how hit ratio depends on buffer size. If there is a total of $T$ buffer references and number of references that find the page in the buffer is $h$, we define hit ratio as $C = \frac{h}{T}$.
+
+Unless otherwise noted, we report average of four runs of the experiment. We don't plot error bars because they are too small. In all cases, they were smaller than 0.01.
+
+O'Niel et al. \cite{lruk} didn't specify what correlated reference period (CRP) they used in their experiments. When replicating their experiments, we found that we get results closest to theirs if we use $CRP = 0$.
+
+We wrote LRU-K simulation and evaluation in Python and plotted all the figures with R.

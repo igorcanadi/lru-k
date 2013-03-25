@@ -23,6 +23,12 @@ We replicated the experiment exactly, using $N_1 = 100$ and $N_2 = 10000$ pages.
 
 \subsection{Zipfian Random Access Experiment}
 
+Next, we evaluated LRU-K on workloads that access pages according to Zipfian distribution, replicating the experiment conducted by O'Niel et al. \cite{lruk}. They used $N = 1000$ pages numbered 1 through N; probability for referencing a page with page number less than or equal to i was $\left(\frac{i}{N}\right)^\frac{\log{a}}{\log{b}}$ with constants $a = 0.8$ and $b = 0.2$.
+
+Their findings were that LRU-2 gains are lower than in two pool test, since the skew of Zipfian 80-20 distribution is milder than skew in two pool test. Figure \ref{fig:zipfian} shows hit ratio we measured for different buffer sizes. There are three main points we can take from this figure. First, LRU-2 and LRU-3 clearly outperform LRU-1, more so for smaller buffer sizes. Second, LRU-2 and LRU-3 performances are similar. Third, gains for LRU-2 are smaller than in two pool experiment.
+
+First and third finding are consistent with O'Niel et al. They didn't evaluate LRU-3 on pool with Zipfian distribution, so we can not compare our second finding.
+
 \begin{figure}[t!]
     \centering
 	\includegraphics[width=0.5\textwidth]{./figures/zipfian.pdf}
@@ -33,8 +39,13 @@ We replicated the experiment exactly, using $N_1 = 100$ and $N_2 = 10000$ pages.
 
 \subsection{PostgreSQL Trace Experiment}
 
+For their third experiment, O'Niel et al. \cite{lruk} used a trace from OLTP system of a large bank. We did not have access to the trace, so we could not replicate the experiment exactly. Instead, we instrumentalized PostgreSQL to capture all buffer accesses and ran \texttt{pgbench} benchmark with 400 clients, each issuing 10 transactions. This workload generated a total of 89692 accesses. However, because PostgreSQL \texttt{elog} function isn't thread-safe, some parts of our trace were corrupted. As a result, we captured only 87373 accesses, which is 97.4\% of total buffer accesses. We tried to make \texttt{elog} thread-safe, but that caused big slowdowns of the system, which resulted in some of the transactions getting aborted.
+
+We evaluated LRU-1, LRU-2 and LRU-3 algorithms on the generated trace. For LRU-2 and LRU-3, we ran two experiments, one with correlated reference period (CRP) set to be 0 and another with $CRP = 20$. Since we had only one trace, we ran the experiment only once and report the hit ratio of that run, unlike in previous experiments, where we reported average of four runs. Figure \ref{fig:postgres} shows hit rates we measured for different buffer sizes. Interesting thing to note is that LRU-2 and LRU-3 are inferior to LRU-1 with $CRP = 0$. However, with $CRP = 20$ they both outperform LRU-1. Unfortunately, O'Niel et al. \cite{lruk} never stated which CRP they used in their experiments.
+
 \begin{figure}[t!]
     \centering
 	\includegraphics[width=0.5\textwidth]{./figures/postgres.pdf}
-	\caption{Simulation results of different buffer management strategies using a trace collected from PostgreSQL running \texttt{pgbench} benchmark. Horizontal axis shows the simulate buffer size and vertical axis shows measured hit ratio. LRU-2 and LRU-3 are evaluated with Correlated Reference Period set to 0 and 20.}
+	\caption{Simulation results of different buffer management strategies using a trace collected from PostgreSQL running \texttt{pgbench} benchmark. Horizontal axis shows the simulate buffer size and vertical axis shows measured hit ratio. LRU-2 and LRU-3 were evaluated with Correlated Reference Period set to 0 and 20.}
+	\label{fig:postgres}
 \end{figure}
