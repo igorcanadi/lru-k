@@ -5,6 +5,10 @@ With a goal of recreating findings of O'Neil et al. \cite{lruk} we evaluated LRU
 \item buffer accesses captured with instrumented PostgreSQL running \texttt{pgbench}.
 \end{itemize}
 
+To prove our hypotheses that LRU-2 and LRU-3 outperform LRU-1 on database workloads, we expect our results to show higher hit ratio for all buffer sizes in LRU-2 and LRU-3 case. We also expect to see the difference in performance decrease as buffer size grows, since in the limit of infinite buffer size, they should all perform the same.
+
+Our second hypothesis is that LRU-2 and LRU-3 performances are similar. We don't expect to see high differences in cache hit ratio in any workload.
+
 We present results for these workloads in the following sections.
 
 \subsection{Two Pool Experiment}
