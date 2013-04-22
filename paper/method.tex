@@ -4,6 +4,6 @@ As a result of our experiments, we measure how hit ratio depends on buffer size.
 
 Unless otherwise noted, we report the average of four runs of the experiment. We don't plot error bars because they are too small. In all cases, they were smaller than 0.01.
 
-O'Neil et al. \cite{lruk} didn't specify what Correlated Reference Period (CRP) they used in their experiments. When replicating their experiments, we found that we get results closest to theirs if we use $CRP = 0$.
+O'Neil et al. \cite{lruk} didn't specify what Correlated Reference Period (CRP) they used in their experiments. When replicating their experiments, we found that we get results closest to theirs if we use $CRP = 0$. This make sense because the CRP is not needed for artificial stochastic workloads like the 2-pools and zipfian workloads.
 
 We wrote the LRU-K simulation and evaluation in Python and plotted all the figures with R.
